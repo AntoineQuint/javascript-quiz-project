@@ -20,7 +20,7 @@ class Quiz {
     shuffleQuestions() {
         let memoryQ = "";
         for (let j = 0; j < this.questions.length; j++) {
-            let randomNumberQ = (Math.round(Math.random() * this.questions.length));
+            let randomNumberQ = (Math.floor(Math.random() * this.questions.length));
             memoryQ = this.questions[j];
             this.questions[j] = this.questions[randomNumberQ];
             this.questions[randomNumberQ] = memoryQ;
@@ -31,8 +31,11 @@ class Quiz {
     }
 
     checkAnswer(answer) {
-        if (answer) {
+        if (answer === this.questions[this.currentQuestionIndex].answer) {
             this.correctAnswers++;
+            return true;
+        }else{
+            return false
         }
     }
 

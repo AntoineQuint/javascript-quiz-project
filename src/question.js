@@ -10,7 +10,7 @@ class Question {
     shuffleChoices(){
         let memory = "";
         for (let i = 0; i<this.choices.length; i++){
-            let randomNumber = (Math.round(Math.random()*this.choices.length));
+            let randomNumber = (Math.floor(Math.random()*this.choices.length));
             memory = this.choices[i] ;
             this.choices[i] = this.choices[randomNumber];
             this.choices[randomNumber] = memory;
