@@ -71,7 +71,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /************  TIMER  ************/
 
-  let timer;
+  let timer = 1;
+  let timerMinutes = 2;
+  let setInt = setInterval (()=>{
+    timer--;
+    timeRemainingContainer.innerText = `${timerMinutes}:${timer}`;
+  
+    if(timer === 0 && timerMinutes === 0){
+      clearInterval(setInt);
+    }
+    if(timer === 0){
+      timerMinutes--;
+      timer = 60;
+      
+    }
+    return
+  },1000);
+
+
+
 
   /************  EVENT LISTENERS  ************/
 
@@ -131,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // const newQuestion = document.getElementById("question");
     questionContainer.innerText = `${question.text}`;
 
-  
+
 
     choiceContainer.innerHTML = "";
 
@@ -151,8 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       choiceContainer.appendChild(newLi);
     });
-
-    let bar = quiz.currentQuestionIndex;
 
     // 3. Update the question count text
     // Update the question count (div#questionCount) show the current question out of total questions
@@ -189,23 +205,23 @@ document.addEventListener("DOMContentLoaded", () => {
     radioButtons.forEach(function (radioButton) {
       if (radioButton.checked) {
         let chosenAnswer = radioButton.value;
-      
+
 
         let correctOrNot = quiz.checkAnswer(chosenAnswer);
         if (correctOrNot === true) {
-          
+
         }
       }
-    
-    });  
 
-      quiz.moveToNextQuestion();
-      showQuestion();
-      progressBar.style.width = `${quiz.currentQuestionIndex*100/quiz.questions.length}%`
-      questionCount.innerText = `Question ${quiz.currentQuestionIndex} of ${quiz.questions.length}`;
-       if(quiz.currentQuestionIndex === quiz.questions.length){
-       showResults();
-      }
+    });
+
+    quiz.moveToNextQuestion();
+    showQuestion();
+    progressBar.style.width = `${quiz.currentQuestionIndex * 100 / quiz.questions.length}%`
+    questionCount.innerText = `Question ${quiz.currentQuestionIndex} of ${quiz.questions.length}`;
+    if (quiz.currentQuestionIndex === quiz.questions.length) {
+      showResults();
+    }
     // progressBar.style.width = `${bar * 10}%`;
     // questionCount.innerText = `Question ${bar} of ${bar}`;
     // 2. Loop through all the choice elements and check which one is selected
@@ -231,7 +247,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. Update the result container (div#result) inner text to show the number of correct answers
     const resultContainer = document.getElementById("result");
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`;
+
+    const restartBtn = document.getElementById("restartButton");
+
+    restartBtn.addEventListener("click", () => {
+      quizView.style.display = "block";
+      endView.style.display = "none";
+      quiz.shuffleQuestions();
+      timerMinutes = 2;
+      timer = 1;
+      quiz.currentQuestionIndex = 0;
+      progressBar.style.width = `0%`
+      questionCount.innerText = `Question 0 of ${quiz.questions.length}`;
+    });
   }
 
-  document.addEventListener("click", ()=> console.log(quiz)) 
+  document.addEventListener("click", () => console.log(quiz))
+
 });
